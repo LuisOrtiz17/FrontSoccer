@@ -1,0 +1,103 @@
+<p-accordion (onOpen)="cargarTorneos()">
+    <p-accordionTab header="Busqueda por equipo" [selected]="false">
+        <div class="grid">
+
+            <div class="col-12 md:col-4 flex md:justify-content-center">
+                <p-dropdown [options]="torneos" 
+                        [(ngModel)]="selectedTorneo" 
+                        placeholder="Selecciona torneo" 
+                        optionLabel="name"
+                        [showClear]="true"
+                        (onChange)="cargarEquipos()">
+                </p-dropdown>
+            </div>
+            
+            <div class="col-12 md:col-4 flex md:justify-content-center">
+                <p-dropdown [options]="equipos" 
+                        [(ngModel)]="selectedEquipo"
+                        [disabled]="!selectedTorneo" 
+                        placeholder="Selecciona equipo" 
+                        optionLabel="name"
+                        [showClear]="true"
+                        (onChange)="obtenPlayers()">
+                </p-dropdown>
+            </div>
+            
+            <div class="col-12 md:col-4 flex md:justify-content-center">
+                <p-button (click)="showModalDialog()" 
+                          icon="pi pi-external-link" 
+                          label="Agregar jugador"
+                          [disabled]="!selectedEquipo"></p-button>
+            </div>
+        </div>
+        
+        
+    </p-accordionTab>
+</p-accordion>
+
+<!-- TABLA DE CONTENIDO-->
+<p-divider align="center">
+    <b class="text-layout">Detalle de los jugadores</b>
+</p-divider>
+
+<div class="card">
+    <p-table [value]="players" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" responsiveLayout="scroll"
+        currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} elementos"
+        [rowsPerPageOptions]="[5,10,15]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nombre</th>
+                <th>Dorsal</th>
+                <th>Equipo</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-player>
+            <tr>
+                <td>{{player.nombre}}</td>
+                <td>{{player.dorsal}}</td>
+                <td>{{player.equipo.name}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="openEditDialog(player)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deletePlayer(player)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <!--Aquí puede ir un elemento-->
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <!--Aquí puede ir un elemento-->
+        </ng-template>
+    </p-table>
+</div>
+
+<!--Dialog Agregar Jugador-->
+
+<p-dialog header="Agregar jugador" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"
+    [draggable]="true" [resizable]="false" [dismissableMask]="true" (onHide)="obtenPlayers()"
+    *ngIf="selectedEquipo">
+    <app-agregar [equipo]="selectedEquipo"></app-agregar>
+</p-dialog>
+
+<!--Dialog EDITAR-->
+<p-dialog header="Editar jugador" 
+          [(visible)]="dialogEdit" 
+          [modal]="true" 
+          [style]="{width: '50vw'}"
+          styleClass="fluid"
+          [draggable]="true">
+        
+          <ng-template pTemplate="content">
+              <app-editar [player]="jugador"></app-editar>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple [disabled]="invalidFormEdit" label="Save" icon="pi pi-check" class="p-button-text" (click)="updatePlayer()"></button>
+        </ng-template>
+</p-dialog>
+
+<!--TOASTs-->
+<p-toast position="bottom-center" key="ok"></p-toast>
+<p-toast position="bottom-center" key="error"></p-toast>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

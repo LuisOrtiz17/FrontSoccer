@@ -1,0 +1,84 @@
+
+<form autocomplete="off" [formGroup]="miForm">
+    <div class="card text-layout">
+        <div class="field grid">
+            <label class="col-12 md:col-3 xl:col-2">Nombre</label>
+            <div class="col-12 md:col-9 xl:col-10">
+                <input type="text" pInputText
+                              placeholder="Nombre del jugador"
+                              formControlName="nombre"
+                              class="w-full ">
+                <span class="text-orange-600" *ngIf="campoValido('nombre')">
+                    El nombre del jugador es obligatorio
+                </span>
+            </div>
+        </div>
+
+        <div class="field grid">
+            <label class="col-12 md:col-3 xl:col-2">Dorsal</label>
+            <div class="col-12 md:col-9 xl:col-10">
+                <input type="number" pInputText
+                              placeholder="Dorsal del jugador"
+                              formControlName="dorsal"
+                              class="w-full">
+
+                <span class="text-orange-600" *ngIf="campoValido('dorsal')">
+                    El dorsal del jugador es obligatorio
+                </span>
+            </div>
+        </div>
+
+        <div class="fiel grid" *ngIf="checked">
+            <label class="col-12 md:col-3 xl:col-2">Torneo</label>
+            <div class="col-12 md:col-9 xl:col-10">
+                <p-dropdown [options]="torneos" 
+                        [(ngModel)]="selectedTorneo"
+                        [formControl]="inputTorneo"
+                        optionLabel="name"
+                        (onChange)="obtenEquipos()"
+                        [showClear]="true"
+                        placeholder="Seleccione un torneo"
+                        styleClass="w-full">
+                </p-dropdown>
+            </div>
+            
+        </div>
+
+        <div class="fiel grid">
+            <label class="col-12 md:col-3 xl:col-2">Equipo</label>
+            <div class="col-12 md:col-9 xl:col-10">
+                <p-dropdown [options]="equipos" 
+                        [(ngModel)]="selectedEquipo" 
+                        formControlName="equipo"
+                        optionLabel="name"
+                        optionValue="_id"
+                        [showClear]="true"
+                        [autoDisplayFirst]="true"
+                        styleClass="w-full">
+                </p-dropdown>
+                <span class="text-orange-600" *ngIf="campoValido('equipo')">
+                    El equipo del jugador es obligatorio
+                </span>
+            </div>
+            
+        </div>
+
+    </div>
+</form>
+<div class="fiel grid">
+    <div class="field-checkbox col">
+        <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary" (onChange)="cambioEquipo()"></p-checkbox>
+        <label for="binary">Cambio de equipo</label>
+    </div>
+</div>
+
+<span>Valid</span>
+<pre>{{ miForm.valid}}</pre>
+<br>
+
+<span>Value</span>
+<pre>{{ miForm.value | json}}</pre>
+<br>
+
+<span>Invalid</span>
+<pre>{{ miForm.invalid}}</pre>

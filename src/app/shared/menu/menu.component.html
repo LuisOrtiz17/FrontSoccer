@@ -1,0 +1,7 @@
+<p-menubar [model]="items">
+    <ng-template pTemplate="end">
+        <button pButton (click)="changeTheme()" 
+                type="button" label="{{ dark | theme}}"
+                icon="pi pi-pencil"></button>
+    </ng-template>
+</p-menubar>

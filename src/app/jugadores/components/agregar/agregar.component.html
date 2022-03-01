@@ -1,0 +1,81 @@
+<p-toast position="bottom-center" key="ok"></p-toast>
+<p-toast position="bottom-center" key="error"></p-toast>
+
+<form autocomplete="off" [formGroup]="miForm" (ngSubmit)="guardar()">
+    <div class="card text-layout">
+        <div class="field grid">
+            <label class="col-12 md:col-2 xl:col-1">Nombre</label>
+            <div class="col-12 md:col-10 xl:col-11">
+                <input type="text" pInputText
+                              placeholder="Nombre del jugador"
+                              formControlName="nombre"
+                              class="w-full ">
+                <span class="text-orange-600" *ngIf="campoValido('nombre')">
+                    El nombre del jugador es obligatorio
+                </span>
+            </div>
+        </div>
+
+        <div class="field grid">
+            <label class="col-12 md:col-2 xl:col-1">Dorsal</label>
+            <div class="col-12 md:col-10 xl:col-11">
+                <input type="number" pInputText
+                              placeholder="Dorsal del jugador"
+                              formControlName="dorsal"
+                              class="w-full">
+
+                <span class="text-orange-600" *ngIf="campoValido('dorsal')">
+                    El dorsal del jugador es obligatorio
+                </span>
+            </div>
+        </div>
+
+        <!--Temporal DIV [(ngModel)]="selectedEquipo"-->
+        <div class="fiel grid">
+            <label class="col-12 md:col-2 xl:col-1">Equipo</label>
+            <div class="col-12 md:col-10 xl:col-11">
+                <input type="text" pInputText
+                              [disabled]="ocultarInput"
+                              [placeholder]="equipoInput.name"
+                              class="w-full ">
+                <span class="text-orange-600" *ngIf="campoValido('equipo')">
+                    El equipo del jugador es obligatorio
+                </span>
+            </div>
+        </div>
+
+        <div class="fiel grid">
+            <div class="flex md:justify-content-end col-12 md:col-6">
+                <button type="submit" 
+                    pButton
+                    label="Guardar" 
+                    icon="pi pi-check"
+                    [disabled]="miForm.invalid"
+                    >
+                </button>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <button 
+                    pButton
+                    type="button"
+                    label="Limpiar" 
+                    icon="pi pi-times"
+                    class="p-button-warning"
+                    (click)="limpiar()">
+                </button>
+            </div>
+            
+
+            
+        </div>
+    </div>
+</form>
+
+<span>Valid</span>
+<pre>{{ miForm.valid}}</pre>
+<br>
+
+<span>Value</span>
+<pre>{{ miForm.value | json}}</pre>
+<br>
